@@ -3,7 +3,13 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/vakhia/artilight/internal/config"
+	"github.com/vakhia/artilight/internal/database"
+	"github.com/vakhia/artilight/internal/delivery/handlers"
+	"github.com/vakhia/artilight/internal/delivery/router"
+	"github.com/vakhia/artilight/internal/repositories"
 	"github.com/vakhia/artilight/internal/server"
+	"github.com/vakhia/artilight/internal/usecases"
+	"github.com/vakhia/artilight/pkg/token"
 	"net/http"
 )
 
@@ -12,13 +18,25 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	router := gin.Default()
+	ginRouter := gin.Default()
 
-	router.GET("/", func(c *gin.Context) {
+	ginRouter.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Hello, Gin server!"})
 	})
+	db := database.Open(cfg)
+	defer database.Close(db)
 
-	err = server.NewServer(cfg, router).Run()
+	//Services
+	tokenService := token.NewJWTService(cfg)
+
+	//Core
+	userRepo := repositories.NewUserRepository(db)
+	userUseCase := usecases.NewUserUseCase(userRepo, tokenService)
+	userHandler := handlers.NewUserHandler(userUseCase)
+	router.InitAuthRoutes(ginRouter, userHandler)
+	router.InitTestRoutes(ginRouter, tokenService)
+
+	err = server.NewServer(cfg, ginRouter).Run()
 	if err != nil {
 		return
 	}

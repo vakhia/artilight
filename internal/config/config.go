@@ -8,6 +8,7 @@ type Config struct {
 	Environment string
 	Port        string
 	Database    *Database
+	Token       *Token
 }
 
 type Database struct {
@@ -16,6 +17,11 @@ type Database struct {
 	User     string
 	DB       string
 	Password string
+}
+
+type Token struct {
+	Secret string
+	Issuer string
 }
 
 func NewConfig() (*Config, error) {
@@ -35,6 +41,10 @@ func NewConfig() (*Config, error) {
 			User:     env.MustGet("DATABASE_USER"),
 			DB:       env.MustGet("DATABASE_NAME"),
 			Password: env.MustGet("DATABASE_PASSWORD"),
+		},
+		Token: &Token{
+			Secret: env.MustGet("TOKEN_SECRET"),
+			Issuer: env.MustGet("TOKEN_ISSUER"),
 		},
 	}, nil
 }
