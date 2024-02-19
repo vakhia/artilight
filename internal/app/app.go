@@ -3,12 +3,12 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/vakhia/artilight/internal/config"
+	"github.com/vakhia/artilight/internal/controller/handlers"
+	"github.com/vakhia/artilight/internal/controller/router"
 	"github.com/vakhia/artilight/internal/database"
-	"github.com/vakhia/artilight/internal/delivery/handlers"
-	"github.com/vakhia/artilight/internal/delivery/router"
 	"github.com/vakhia/artilight/internal/repositories"
 	"github.com/vakhia/artilight/internal/server"
-	"github.com/vakhia/artilight/internal/usecases"
+	"github.com/vakhia/artilight/internal/services"
 	"github.com/vakhia/artilight/pkg/token"
 	"net/http"
 )
@@ -31,7 +31,7 @@ func Run() {
 
 	//Core
 	userRepo := repositories.NewUserRepository(db)
-	userUseCase := usecases.NewUserUseCase(userRepo, tokenService)
+	userUseCase := services.NewUserUseCase(userRepo, tokenService)
 	userHandler := handlers.NewUserHandler(userUseCase)
 	router.InitAuthRoutes(ginRouter, userHandler)
 	router.InitTestRoutes(ginRouter, tokenService)

@@ -5,15 +5,15 @@ import (
 	"github.com/vakhia/artilight/internal/common/base"
 	"github.com/vakhia/artilight/internal/common/dto"
 	"github.com/vakhia/artilight/internal/common/messages"
-	"github.com/vakhia/artilight/internal/usecases"
+	"github.com/vakhia/artilight/internal/services"
 	"net/http"
 )
 
 type UserHandler struct {
-	userUseCase usecases.IUserUseCase
+	userUseCase services.IUserService
 }
 
-func NewUserHandler(userUseCase usecases.IUserUseCase) UserHandler {
+func NewUserHandler(userUseCase services.IUserService) UserHandler {
 	return UserHandler{userUseCase: userUseCase}
 }
 

@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/vakhia/artilight/internal/delivery/handlers"
+	"github.com/vakhia/artilight/internal/controller/handlers"
 )
 
 func InitAuthRoutes(router *gin.Engine, userHandler handlers.UserHandler) {
