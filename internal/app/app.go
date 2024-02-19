@@ -31,10 +31,18 @@ func Run() {
 
 	//Core
 	userRepo := repositories.NewUserRepository(db)
-	userUseCase := services.NewUserUseCase(userRepo, tokenService)
-	userHandler := handlers.NewUserHandler(userUseCase)
+	userService := services.NewUserService(userRepo, tokenService)
+	userHandler := handlers.NewUserHandler(userService)
+
+	//Category
+	categoryRepo := repositories.NewCategoryRepository(db)
+	categoryService := services.NewCategoryService(categoryRepo)
+	categoryHandler := handlers.NewCategoryHandler(categoryService)
+
+	//Routes
 	router.InitAuthRoutes(ginRouter, userHandler)
 	router.InitTestRoutes(ginRouter, tokenService)
+	router.InitCategoryRoutes(ginRouter, tokenService, categoryHandler)
 
 	err = server.NewServer(cfg, ginRouter).Run()
 	if err != nil {

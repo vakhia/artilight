@@ -20,7 +20,7 @@ type UserService struct {
 	tokenService token.IJwtService
 }
 
-func NewUserUseCase(userRepo repositories.IUserRepository, tokenService token.IJwtService) *UserService {
+func NewUserService(userRepo repositories.IUserRepository, tokenService token.IJwtService) *UserService {
 	return &UserService{userRepo: userRepo, tokenService: tokenService}
 }
 

@@ -12,6 +12,10 @@ func Up(database *gorm.DB) {
 func createTables(database *gorm.DB) {
 	err := database.AutoMigrate(&domain.User{})
 	if err != nil {
-		panic("something went wrong")
+		panic("something went wrong with users migration")
+	}
+	err = database.AutoMigrate(&domain.Category{})
+	if err != nil {
+		panic("something went wrong with categories migration")
 	}
 }
