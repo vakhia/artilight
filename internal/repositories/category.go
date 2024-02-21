@@ -7,10 +7,10 @@ import (
 
 type ICategoryRepository interface {
 	GetAllCategories() ([]domain.Category, error)
-	GetById(id int) (domain.Category, error)
+	GetCategoryById(id int) (domain.Category, error)
 	CreateCategory(category domain.Category) (domain.Category, error)
 	UpdateCategory(category domain.Category) (domain.Category, error)
-	DeleteUser(id int) error
+	DeleteCategory(id int) error
 }
 
 type CategoryRepository struct {
@@ -30,7 +30,7 @@ func (r *CategoryRepository) GetAllCategories() ([]domain.Category, error) {
 	return categories, nil
 }
 
-func (r *CategoryRepository) GetById(id int) (domain.Category, error) {
+func (r *CategoryRepository) GetCategoryById(id int) (domain.Category, error) {
 	var category domain.Category
 	err := r.db.First(&category, id).Error
 	if err != nil {
@@ -55,7 +55,7 @@ func (r *CategoryRepository) UpdateCategory(category domain.Category) (domain.Ca
 	return category, nil
 }
 
-func (r *CategoryRepository) DeleteUser(id int) error {
+func (r *CategoryRepository) DeleteCategory(id int) error {
 	err := r.db.Delete(&domain.Category{}, id).Error
 	if err != nil {
 		return err

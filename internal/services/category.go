@@ -39,7 +39,7 @@ func (c *CategoryService) GetAllCategories() ([]dto.CategoryResponse, error) {
 }
 
 func (c *CategoryService) GetCategoryById(id int) (dto.CategoryResponse, error) {
-	category, err := c.categoryRepo.GetById(id)
+	category, err := c.categoryRepo.GetCategoryById(id)
 	if err != nil {
 		return dto.CategoryResponse{}, err
 	}
@@ -67,7 +67,7 @@ func (c *CategoryService) CreateCategory(category dto.CategoryCreateRequest) (dt
 }
 
 func (c *CategoryService) UpdateCategory(category dto.CategoryUpdateRequest) (dto.CategoryResponse, error) {
-	_, err := c.categoryRepo.GetById(category.Id)
+	_, err := c.categoryRepo.GetCategoryById(category.Id)
 	if err != nil {
 		return dto.CategoryResponse{}, err
 	}
@@ -89,5 +89,5 @@ func (c *CategoryService) UpdateCategory(category dto.CategoryUpdateRequest) (dt
 }
 
 func (c *CategoryService) DeleteCategory(id int) error {
-	return c.categoryRepo.DeleteUser(id)
+	return c.categoryRepo.DeleteCategory(id)
 }
