@@ -12,8 +12,8 @@ type UserLoginRequest struct {
 }
 
 type UserResponse struct {
-	Id    int
-	Name  string
-	Email string
-	Token string
+	Id    int    `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
+	Token string `json:"token,omitempty"`
 }

@@ -18,4 +18,8 @@ func createTables(database *gorm.DB) {
 	if err != nil {
 		panic("something went wrong with categories migration")
 	}
+	err = database.AutoMigrate(&domain.Art{})
+	if err != nil {
+		panic("something went wrong with arts migration")
+	}
 }

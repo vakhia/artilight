@@ -29,7 +29,7 @@ func Run() {
 	//Services
 	tokenService := token.NewJWTService(cfg)
 
-	//Core
+	//User
 	userRepo := repositories.NewUserRepository(db)
 	userService := services.NewUserService(userRepo, tokenService)
 	userHandler := handlers.NewUserHandler(userService)
@@ -39,10 +39,16 @@ func Run() {
 	categoryService := services.NewCategoryService(categoryRepo)
 	categoryHandler := handlers.NewCategoryHandler(categoryService)
 
+	//Art
+	artRepo := repositories.NewArtRepository(db)
+	artService := services.NewArtService(artRepo)
+	artHandler := handlers.NewArtHandler(artService)
+
 	//Routes
 	router.InitAuthRoutes(ginRouter, userHandler)
 	router.InitTestRoutes(ginRouter, tokenService)
 	router.InitCategoryRoutes(ginRouter, tokenService, categoryHandler)
+	router.InitArtRoutes(ginRouter, tokenService, artHandler)
 
 	err = server.NewServer(cfg, ginRouter).Run()
 	if err != nil {
