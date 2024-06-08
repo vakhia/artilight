@@ -20,7 +20,7 @@ func NewPgSqlCollectionRepository(db *gorm.DB) *PgSqlCollectionRepository {
 
 func (r *PgSqlCollectionRepository) GetCollections() []entity.Collection {
 	var collections []entity.Collection
-	r.db.Find(&collections)
+	r.db.Preload("Owner").Find(&collections)
 	return collections
 }
 

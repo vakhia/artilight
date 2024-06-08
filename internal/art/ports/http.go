@@ -109,3 +109,23 @@ func (h HttpServer) CreateCollection(ctx *gin.Context) {
 
 	ctx.JSON(201, gin.H{"message": "Collection created successfully"})
 }
+
+func (h HttpServer) GetAllCollections(ctx *gin.Context) {
+	collections, err := h.app.Queries.AllCollection.Handle()
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": collections})
+}
+
+func (h HttpServer) GetAllCategories(ctx *gin.Context) {
+	categories, err := h.app.Queries.AllCategories.Handle()
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": categories})
+}

@@ -36,8 +36,10 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 			CreateCollectionCommand: command.NewCollectionHandler(collectionRepository, userAdapter),
 		},
 		Queries: application.Queries{
-			AllArts: query.NewAllArtsQuery(artRepository),
-			GetArt:  query.NewGetArtHandler(artRepository),
+			AllArts:       query.NewAllArtsQuery(artRepository),
+			GetArt:        query.NewGetArtHandler(artRepository),
+			AllCollection: query.NewAllCollectionQuery(collectionRepository),
+			AllCategories: query.NewAllCategoriesQuery(categoryRepository),
 		},
 	}
 
@@ -65,6 +67,12 @@ func (m *Module) RegisterRoutes() {
 	categoryGroup := m.Router.Group("/api/v1/categories")
 	{
 		categoryGroup.POST("", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.CreateCategory)
+		categoryGroup.GET("", m.HttpServer.GetAllCategories)
+	}
+	// Collections routes
+	collectionGroup := m.Router.Group("/api/v1/collections")
+	{
+		collectionGroup.GET("", m.HttpServer.GetAllCollections)
 	}
 }
 

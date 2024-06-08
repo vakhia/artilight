@@ -17,6 +17,8 @@ type Commands struct {
 }
 
 type Queries struct {
-	AllArts query.AllArtsQuery
-	GetArt  query.GetArtHandler
+	AllArts       query.AllArtsQuery
+	GetArt        query.GetArtHandler
+	AllCollection query.AllCollectionsQuery
+	AllCategories query.AllCategoriesQuery
 }
