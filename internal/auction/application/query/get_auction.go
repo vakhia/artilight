@@ -60,7 +60,7 @@ func mapBidsToResponse(bids []aggregate.Bid) []dto.BidResponse {
 			},
 			Bidder: dto.BidderResponse{
 				Id:       bid.Bidder.Id,
-				FullName: bid.Bidder.FullName,
+				FullName: bid.Bidder.GetFullName(),
 				Avatar:   bid.Bidder.Avatar,
 			},
 		})

@@ -21,7 +21,8 @@ func (a *UserAdapter) FindBidderById(userID uuid.UUID) (entity.Bidder, error) {
 	}
 
 	return entity.Bidder{
-		Id:       user.Id,
-		FullName: user.GetFullName(),
+		Id:        user.Id,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
 	}, nil
 }
