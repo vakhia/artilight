@@ -2,6 +2,7 @@ package ports
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/vakhia/artilight/internal/art/application"
 	"github.com/vakhia/artilight/internal/art/application/dto"
 	"github.com/vakhia/artilight/internal/common/dtos"
@@ -41,6 +42,24 @@ func (h HttpServer) GetAllArts(ctx *gin.Context) {
 	}
 
 	ctx.JSON(200, gin.H{"data": arts})
+}
+
+func (h HttpServer) GetArt(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	artId, err := uuid.Parse(id)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	art, err := h.app.Queries.GetArt.Handle(artId)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": art})
 }
 
 func (h HttpServer) CreateArt(ctx *gin.Context) {

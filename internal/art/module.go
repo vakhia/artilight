@@ -37,6 +37,7 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 		},
 		Queries: application.Queries{
 			AllArts: query.NewAllArtsQuery(artRepository),
+			GetArt:  query.NewGetArtHandler(artRepository),
 		},
 	}
 
@@ -57,6 +58,7 @@ func (m *Module) RegisterRoutes() {
 	artGroup := m.Router.Group("/api/v1/arts")
 	{
 		artGroup.GET("", m.HttpServer.GetAllArts)
+		artGroup.GET("/:id", m.HttpServer.GetArt)
 		artGroup.POST("", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.CreateArt)
 	}
 	// Categories routes

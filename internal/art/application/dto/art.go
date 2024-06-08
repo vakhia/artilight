@@ -16,7 +16,7 @@ type CreateArtRequest struct {
 }
 
 type ArtResponse struct {
-	ID          uuid.UUID          `json:"id"`
+	Id          uuid.UUID          `json:"id"`
 	Slug        string             `json:"slug"`
 	Title       string             `json:"title"`
 	Description string             `json:"description"`
@@ -25,4 +25,19 @@ type ArtResponse struct {
 	Owner       OwnerResponse      `json:"owner,omitempty"`
 	Category    CategoryResponse   `json:"category"`
 	Collection  CollectionResponse `json:"collection"`
+	Auction     []AuctionResponse  `json:"auction,omitempty"`
+}
+
+type AuctionResponse struct {
+	Id        uuid.UUID     `json:"id"`
+	Status    string        `json:"status"`
+	StartDate string        `json:"start_date"`
+	EndDate   string        `json:"end_date"`
+	Bids      []BidResponse `json:"bids"`
+}
+
+type BidResponse struct {
+	Id     uuid.UUID     `json:"id"`
+	Amount float64       `json:"amount"`
+	Bidder OwnerResponse `json:"bidder"`
 }

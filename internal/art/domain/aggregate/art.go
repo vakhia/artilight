@@ -19,6 +19,7 @@ type Art struct {
 	Collection   entity.Collection `json:"collection,omitempty"`
 	CategoryId   int               `json:"-"`
 	Category     entity.Category   `json:"category,omitempty"`
+	Auctions     []entity.Auction  `gorm:"foreignKey:ItemID"` // Use 'ItemID' as the foreign key
 }
 
 func NewArt(slug, title, description string, price float64, owner entity.Owner, category entity.Category, status valueobject.ArtStatus, collection entity.Collection) Art {

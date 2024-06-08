@@ -38,8 +38,32 @@ func (h AllArtsQuery) Handle(params dtos.PaginationParams, sortingParams dtos.So
 }
 
 func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
+	auctions := make([]dto.AuctionResponse, len(art.Auctions))
+	for i, auction := range art.Auctions {
+		bids := make([]dto.BidResponse, len(auction.Bids))
+		for j, bid := range auction.Bids {
+			bids[j] = dto.BidResponse{
+				Id:     bid.Id,
+				Amount: bid.Amount,
+				Bidder: dto.OwnerResponse{
+					Id:       bid.Bidder.Id,
+					FullName: bid.Bidder.GetFullName(),
+					Avatar:   bid.Bidder.Avatar,
+				},
+			}
+		}
+
+		auctions[i] = dto.AuctionResponse{
+			Id:        auction.Id,
+			Status:    auction.Status,
+			StartDate: auction.StartDate,
+			EndDate:   auction.EndDate,
+			Bids:      bids,
+		}
+	}
+
 	return dto.ArtResponse{
-		ID:          art.Id,
+		Id:          art.Id,
 		Slug:        art.Slug,
 		Title:       art.Title,
 		Description: art.Description,
@@ -53,7 +77,8 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 		Category: dto.CategoryResponse{
 			Id:          art.Category.Id,
 			Title:       art.Category.Title,
-			Description: art.Category.Description},
+			Description: art.Category.Description,
+		},
 		Collection: dto.CollectionResponse{
 			Id:          art.Collection.Id,
 			Title:       art.Collection.Title,
@@ -65,5 +90,6 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 				Avatar:   art.Collection.Owner.Avatar,
 			},
 		},
+		Auction: auctions,
 	}
 }

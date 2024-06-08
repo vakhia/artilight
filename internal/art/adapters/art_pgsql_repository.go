@@ -34,13 +34,13 @@ func (r *PgSqlArtRepository) GetArtBySlug(slug string) aggregate.Art {
 
 func (r *PgSqlArtRepository) FindArtById(id uuid.UUID) (aggregate.Art, error) {
 	var art aggregate.Art
-	result := r.db.Preload("Owner").Preload("Category").Where("id = ?", id).First(&art)
+	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("id = ?", id).First(&art)
 	return art, result.Error
 }
 
 func (r *PgSqlArtRepository) GetAllArts(params dtos.PaginationParams, sortParams dtos.SortingParams) ([]aggregate.Art, error) {
 	var arts []aggregate.Art
-	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Owner").Preload(clause.Associations)
+	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Auctions.Bids.Bidder").Preload("Owner").Preload(clause.Associations)
 
 	// Sorting
 	if sortParams.SortBy != "" {
