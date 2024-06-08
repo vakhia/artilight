@@ -4,13 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/vakhia/artilight/internal/config"
+	"github.com/vakhia/artilight/internal/common/config"
 	"time"
 )
 
 type IJwtService interface {
-	GenerateToken(email string, userId int) (string, error)
-	VerifyToken(token string) (int, error)
+	GenerateToken(email string, userId string) (string, error)
+	VerifyToken(token string) (string, error)
 }
 
 type JwtService struct {
@@ -23,7 +23,7 @@ func NewJWTService(cfg *config.Config) *JwtService {
 	}
 }
 
-func (j *JwtService) GenerateToken(email string, userId int) (string, error) {
+func (j *JwtService) GenerateToken(email string, userId string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":  email,
 		"userId": userId,
@@ -33,7 +33,7 @@ func (j *JwtService) GenerateToken(email string, userId int) (string, error) {
 	return token.SignedString([]byte(j.cfg.Token.Secret))
 }
 
-func (j *JwtService) VerifyToken(token string) (int, error) {
+func (j *JwtService) VerifyToken(token string) (string, error) {
 	parsedToken, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		_, ok := token.Method.(*jwt.SigningMethodHMAC)
 
@@ -46,21 +46,21 @@ func (j *JwtService) VerifyToken(token string) (int, error) {
 
 	if err != nil {
 		fmt.Println("Could not parse token")
-		return 0, errors.New("could not parse token")
+		return "", errors.New("could not parse token")
 	}
 
 	tokenIsValid := parsedToken.Valid
 
 	if !tokenIsValid {
-		return 0, errors.New("invalid token")
+		return "", errors.New("invalid token")
 	}
 
 	claims, ok := parsedToken.Claims.(jwt.MapClaims)
 
 	if !ok {
-		return 0, errors.New("invalid token claims")
+		return "", errors.New("invalid token claims")
 	}
 
-	userId := int(claims["userId"].(float64))
+	userId := claims["userId"].(string)
 	return userId, nil
 }
