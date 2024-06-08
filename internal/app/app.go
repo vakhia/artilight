@@ -1,14 +1,15 @@
 package app
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/vakhia/artilight/internal/config"
-	"github.com/vakhia/artilight/internal/controller/handlers"
-	"github.com/vakhia/artilight/internal/controller/router"
-	"github.com/vakhia/artilight/internal/database"
-	"github.com/vakhia/artilight/internal/repositories"
-	"github.com/vakhia/artilight/internal/server"
-	"github.com/vakhia/artilight/internal/services"
+	"github.com/vakhia/artilight/internal/art"
+	"github.com/vakhia/artilight/internal/auction"
+	"github.com/vakhia/artilight/internal/common/config"
+	"github.com/vakhia/artilight/internal/common/container"
+	"github.com/vakhia/artilight/internal/common/database"
+	"github.com/vakhia/artilight/internal/common/fileuploader"
+	"github.com/vakhia/artilight/internal/user"
 	"github.com/vakhia/artilight/pkg/token"
 	"net/http"
 )
@@ -20,38 +21,52 @@ func Run() {
 	}
 	ginRouter := gin.Default()
 
+	// Set up CORS middleware
+	ginRouter.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowWildcard:    true,
+		AllowWebSockets:  true,
+	}))
+
 	ginRouter.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"message": "Hello, Gin server!"})
 	})
 	db := database.Open(cfg)
 	defer database.Close(db)
 
-	//Services
-	tokenService := token.NewJWTService(cfg)
-
-	//User
-	userRepo := repositories.NewUserRepository(db)
-	userService := services.NewUserService(userRepo, tokenService)
-	userHandler := handlers.NewUserHandler(userService)
-
-	//Category
-	categoryRepo := repositories.NewCategoryRepository(db)
-	categoryService := services.NewCategoryService(categoryRepo)
-	categoryHandler := handlers.NewCategoryHandler(categoryService)
-
-	//Art
-	artRepo := repositories.NewArtRepository(db)
-	artService := services.NewArtService(artRepo)
-	artHandler := handlers.NewArtHandler(artService)
-
-	//Routes
-	router.InitAuthRoutes(ginRouter, userHandler)
-	router.InitTestRoutes(ginRouter, tokenService)
-	router.InitCategoryRoutes(ginRouter, tokenService, categoryHandler)
-	router.InitArtRoutes(ginRouter, tokenService, artHandler)
-
-	err = server.NewServer(cfg, ginRouter).Run()
+	// Initialize the Google Cloud Storage
+	uploader, err := fileuploader.NewGCSUploader(cfg.GCS.Bucket)
 	if err != nil {
-		return
+		panic(err)
+	}
+
+	// Initialize the JwtService/
+	jwtService := token.NewJWTService(cfg)
+
+	// Initialize the DI container.
+	container := container.NewContainer()
+	container.JwtService = jwtService
+	container.Storage = uploader
+
+	// Initialize and register the user module.
+	userModule := user.NewModule(cfg, db, ginRouter, container)
+	userModule.RegisterRoutes()
+	container.UserRepository = userModule.GetUserRepository()
+
+	// Initialize and register the art module.
+	artModule := art.NewModule(cfg, db, ginRouter, container)
+	artModule.RegisterRoutes()
+	container.ArtRepository = artModule.GetArtRepository()
+
+	auctionModule := auction.NewModule(cfg, db, ginRouter, container)
+	auctionModule.RegisterRoutes()
+
+	// Start the server.
+	if err := ginRouter.Run(); err != nil {
+		panic(err)
 	}
 }

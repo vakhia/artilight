@@ -1,0 +1,92 @@
+package ports
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/vakhia/artilight/internal/art/application"
+	"github.com/vakhia/artilight/internal/art/application/dto"
+	"github.com/vakhia/artilight/internal/common/dtos"
+	"github.com/vakhia/artilight/internal/common/server"
+	"strconv"
+)
+
+type HttpServer struct {
+	app application.Application
+}
+
+func NewHttpServer(app application.Application) *HttpServer {
+	return &HttpServer{app: app}
+}
+
+func (h HttpServer) GetAllArts(ctx *gin.Context) {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	pageSize, _ := strconv.Atoi(ctx.DefaultQuery("pageSize", "10"))
+
+	sortBy := ctx.DefaultQuery("sortBy", "")
+	sortOrder := ctx.DefaultQuery("sortOrder", "")
+
+	paginateParams := dtos.PaginationParams{
+		PageNumber: page,
+		PageSize:   pageSize,
+	}
+
+	sortingParams := dtos.SortingParams{
+		SortBy:    sortBy,
+		SortOrder: sortOrder,
+	}
+
+	arts, err := h.app.Queries.AllArts.Handle(paginateParams, sortingParams)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": arts})
+}
+
+func (h HttpServer) CreateArt(ctx *gin.Context) {
+	var request dto.CreateArtRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	err := h.app.Commands.CreateArtCommand.Handle(request)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(201, gin.H{"message": "Art created successfully"})
+}
+
+func (h HttpServer) CreateCategory(ctx *gin.Context) {
+	var request dto.CreateCategoryRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	err := h.app.Commands.CreateCategoryCommand.Handle(request)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(201, gin.H{"message": "Category created successfully"})
+}
+
+func (h HttpServer) CreateCollection(ctx *gin.Context) {
+	var request dto.CreateCategoryRequest
+	if err := ctx.ShouldBindJSON(&request); err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	err := h.app.Commands.CreateCategoryCommand.Handle(request)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(201, gin.H{"message": "Collection created successfully"})
+}
