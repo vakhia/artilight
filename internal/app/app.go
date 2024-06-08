@@ -9,6 +9,7 @@ import (
 	"github.com/vakhia/artilight/internal/common/container"
 	"github.com/vakhia/artilight/internal/common/database"
 	"github.com/vakhia/artilight/internal/common/fileuploader"
+	"github.com/vakhia/artilight/internal/common/ws"
 	"github.com/vakhia/artilight/internal/user"
 	"github.com/vakhia/artilight/pkg/token"
 	"net/http"
@@ -64,6 +65,12 @@ func Run() {
 
 	auctionModule := auction.NewModule(cfg, db, ginRouter, container)
 	auctionModule.RegisterRoutes()
+
+	// WebSocket route
+	ginRouter.GET("/ws", ws.HandleWebSocket)
+
+	// Start handling messages
+	go ws.BroadcastToClients()
 
 	// Start the server.
 	if err := ginRouter.Run(); err != nil {

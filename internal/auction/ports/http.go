@@ -6,6 +6,7 @@ import (
 	"github.com/vakhia/artilight/internal/auction/application"
 	"github.com/vakhia/artilight/internal/auction/application/dto"
 	"github.com/vakhia/artilight/internal/common/server"
+	"github.com/vakhia/artilight/internal/common/ws"
 )
 
 type HttpServer struct {
@@ -66,6 +67,11 @@ func (h HttpServer) CreateBid(ctx *gin.Context) {
 	if err != nil {
 		server.RespondWithError(ctx, err)
 		return
+	}
+	// Broadcast new bid
+	ws.Broadcast <- ws.Message{
+		Event: "new_bid",
+		Data:  request,
 	}
 
 	ctx.JSON(201, gin.H{"message": "Bid created successfully"})
