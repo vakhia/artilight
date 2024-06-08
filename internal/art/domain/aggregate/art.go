@@ -12,6 +12,7 @@ type Art struct {
 	Title        string
 	Description  string
 	Price        float64
+	MinBid       float64
 	Status       valueobject.ArtStatus
 	OwnerId      uuid.UUID         `json:"-"`
 	Owner        entity.Owner      `json:"owner,omitempty"`
@@ -22,13 +23,14 @@ type Art struct {
 	Auctions     []entity.Auction  `gorm:"foreignKey:ItemID"` // Use 'ItemID' as the foreign key
 }
 
-func NewArt(slug, title, description string, price float64, owner entity.Owner, category entity.Category, status valueobject.ArtStatus, collection entity.Collection) Art {
+func NewArt(slug, title, description string, price float64, minBid float64, owner entity.Owner, category entity.Category, status valueobject.ArtStatus, collection entity.Collection) Art {
 	return Art{
 		Id:           uuid.New(),
 		Slug:         slug,
 		Title:        title,
 		Description:  description,
 		Price:        price,
+		MinBid:       minBid,
 		Status:       status,
 		Owner:        owner,
 		OwnerId:      owner.Id,

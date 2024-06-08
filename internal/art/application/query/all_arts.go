@@ -68,6 +68,7 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 		Title:       art.Title,
 		Description: art.Description,
 		Price:       art.Price,
+		MinBid:      art.MinBid,
 		Status:      art.Status.String(),
 		Owner: dto.OwnerResponse{
 			Id:       art.Owner.Id,

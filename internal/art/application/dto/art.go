@@ -9,6 +9,7 @@ type CreateArtRequest struct {
 	Title        string    `json:"title" binding:"required"`
 	Description  string    `json:"description" binding:"required"`
 	Price        float64   `json:"price" binding:"required"`
+	MinBid       float64   `json:"min_bid" binding:"required"`
 	Status       string    `json:"status"`
 	CategoryId   int       `json:"category_id" binding:"required"`
 	OwnerId      uuid.UUID `json:"owner_id" binding:"required"`
@@ -21,6 +22,7 @@ type ArtResponse struct {
 	Title       string             `json:"title"`
 	Description string             `json:"description"`
 	Price       float64            `json:"price"`
+	MinBid      float64            `json:"min_bid"`
 	Status      string             `json:"status"`
 	Owner       OwnerResponse      `json:"owner,omitempty"`
 	Category    CategoryResponse   `json:"category"`

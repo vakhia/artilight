@@ -44,6 +44,6 @@ func (h *CreateArtHandler) Handle(request dto.CreateArtRequest) error {
 		return err
 	}
 
-	art := aggregate.NewArt(request.Slug, request.Title, request.Description, request.Price, owner, category, valueobject.Draft, collection)
+	art := aggregate.NewArt(request.Slug, request.Title, request.Description, request.Price, request.MinBid, owner, category, valueobject.Draft, collection)
 	return h.artRepository.Save(art)
 }
