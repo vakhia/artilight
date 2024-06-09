@@ -58,7 +58,7 @@ func (m *Module) RegisterRoutes() {
 	}
 	userGroup := m.Router.Group("/api/v1/users")
 	{
-		userGroup.GET("/:id", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.GetUser)
+		userGroup.GET("/:id", m.HttpServer.GetUser)
 		userGroup.POST("/upload-avatar", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadAvatar)
 		userGroup.POST("/upload-cover", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadCover)
 		userGroup.PUT("/:id", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UpdateUser)
