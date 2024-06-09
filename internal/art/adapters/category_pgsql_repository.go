@@ -3,6 +3,7 @@ package adapters
 import (
 	"github.com/vakhia/artilight/internal/art/domain/entity"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type PgSqlCategoryRepository struct {
@@ -30,6 +31,6 @@ func (r *PgSqlCategoryRepository) FindCategoryById(id int) (entity.Category, err
 }
 
 func (r *PgSqlCategoryRepository) Save(category entity.Category) error {
-	result := r.db.Save(&category)
+	result := r.db.Omit(clause.Associations).Create(&category)
 	return result.Error
 }

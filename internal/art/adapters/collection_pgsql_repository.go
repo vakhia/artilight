@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/vakhia/artilight/internal/art/domain/entity"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type PgSqlCollectionRepository struct {
@@ -31,6 +32,6 @@ func (r *PgSqlCollectionRepository) FindCollectionById(id uuid.UUID) (entity.Col
 }
 
 func (r *PgSqlCollectionRepository) Save(collection entity.Collection) error {
-	result := r.db.Save(&collection)
+	result := r.db.Omit(clause.Associations).Create(&collection)
 	return result.Error
 }

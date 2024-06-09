@@ -95,13 +95,13 @@ func (h HttpServer) CreateCategory(ctx *gin.Context) {
 }
 
 func (h HttpServer) CreateCollection(ctx *gin.Context) {
-	var request dto.CreateCategoryRequest
+	var request dto.CreateCollectionRequest
 	if err := ctx.ShouldBindJSON(&request); err != nil {
 		server.RespondWithError(ctx, err)
 		return
 	}
 
-	err := h.app.Commands.CreateCategoryCommand.Handle(request)
+	err := h.app.Commands.CreateCollectionCommand.Handle(request)
 	if err != nil {
 		server.RespondWithError(ctx, err)
 		return

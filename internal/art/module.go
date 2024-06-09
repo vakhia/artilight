@@ -73,6 +73,7 @@ func (m *Module) RegisterRoutes() {
 	collectionGroup := m.Router.Group("/api/v1/collections")
 	{
 		collectionGroup.GET("", m.HttpServer.GetAllCollections)
+		collectionGroup.POST("", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.CreateCollection)
 	}
 }
 
