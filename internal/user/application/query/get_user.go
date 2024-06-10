@@ -44,6 +44,7 @@ func mapUserToUserResponse(user aggregate.User) dto.UserResponse {
 		Position:    user.Position,
 		Gender:      user.Gender,
 		Currency:    user.Currency,
+		Balance:     user.Balance,
 		PhoneNumber: user.PhoneNumber,
 		Location:    user.Location,
 		Address:     user.Address,

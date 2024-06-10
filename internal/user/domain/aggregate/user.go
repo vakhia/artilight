@@ -16,6 +16,7 @@ type User struct {
 	Position    string
 	Gender      string
 	Currency    string
+	Balance     float64
 	PhoneNumber string
 	Location    string
 	Password    string
@@ -76,4 +77,8 @@ func (u *User) SetAddress(address string) {
 
 func (u *User) SetBio(bio string) {
 	u.Bio = bio
+}
+
+func (u *User) SetBalance(balance float64) {
+	u.Balance = balance
 }

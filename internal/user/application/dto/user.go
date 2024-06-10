@@ -14,6 +14,7 @@ type UserResponse struct {
 	Gender      string    `json:"gender,omitempty"`
 	Email       string    `json:"email"`
 	Currency    string    `json:"currency,omitempty"`
+	Balance     float64   `json:"balance,omitempty"`
 	PhoneNumber string    `json:"phone_number,omitempty"`
 	Location    string    `json:"location,omitempty"`
 	Address     string    `json:"address,omitempty"`

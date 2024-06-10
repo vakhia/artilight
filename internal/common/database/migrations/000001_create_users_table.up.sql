@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users
     bio              TEXT                        NULL,
     gender           VARCHAR(255)                NULL,
     currency         VARCHAR(255)                NULL,
+    balance          DECIMAl              NOT NULL DEFAULT 0.00,
     phone_number     VARCHAR(255)                NULL,
     address          VARCHAR(255)                NULL,
     created_at       TIMESTAMP WITHOUT TIME ZONE NOT NULL,

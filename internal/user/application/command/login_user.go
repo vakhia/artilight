@@ -43,5 +43,7 @@ func (h *LoginUserHandler) Handle(request dto.LoginUserRequest) (dto.UserRespons
 		Email:     user.Email,
 		Avatar:    user.Avatar,
 		Token:     token,
+		Currency:  user.Currency,
+		Balance:   user.Balance,
 	}, nil
 }
