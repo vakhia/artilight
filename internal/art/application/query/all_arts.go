@@ -71,6 +71,14 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 		}
 	}
 
+	tags := make([]dto.TagResponse, len(art.Tags))
+	for i, tag := range art.Tags {
+		tags[i] = dto.TagResponse{
+			Id:    tag.Id,
+			Title: tag.Title,
+		}
+	}
+
 	return dto.ArtResponse{
 		Id:          art.Id,
 		Slug:        art.Slug,
@@ -102,5 +110,6 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 		},
 		Auction: auctions,
 		Images:  images,
+		Tags:    tags,
 	}
 }

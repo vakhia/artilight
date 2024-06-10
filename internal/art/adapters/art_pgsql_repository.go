@@ -35,19 +35,19 @@ func (r *PgSqlArtRepository) Save(art aggregate.Art) error {
 
 func (r *PgSqlArtRepository) FindArtById(id uuid.UUID) (aggregate.Art, error) {
 	var art aggregate.Art
-	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("id = ?", id).First(&art)
+	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Tags").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("id = ?", id).First(&art)
 	return art, result.Error
 }
 
 func (r *PgSqlArtRepository) FindArtBySlug(slug string) (aggregate.Art, error) {
 	var art aggregate.Art
-	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("slug = ?", slug).First(&art)
+	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Tags").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("slug = ?", slug).First(&art)
 	return art, result.Error
 }
 
 func (r *PgSqlArtRepository) GetAllArts(params dtos.PaginationParams, sortParams dtos.SortingParams) ([]aggregate.Art, error) {
 	var arts []aggregate.Art
-	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Preload(clause.Associations)
+	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Tags").Preload("Images").Preload("Auctions.Bids.Bidder").Preload("Owner").Preload(clause.Associations)
 
 	// Sorting
 	if sortParams.SortBy != "" {

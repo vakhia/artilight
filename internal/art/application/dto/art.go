@@ -29,6 +29,7 @@ type ArtResponse struct {
 	Collection  CollectionResponse `json:"collection"`
 	Auction     []AuctionResponse  `json:"auction,omitempty"`
 	Images      []ArtImageResponse `json:"images,omitempty"`
+	Tags        []TagResponse      `json:"tags,omitempty"`
 }
 
 type ArtImageResponse struct {
