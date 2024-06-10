@@ -28,13 +28,15 @@ func (r *PgSqlArtRepository) Save(art aggregate.Art) error {
 	return nil
 }
 
-func (r *PgSqlArtRepository) GetArtBySlug(slug string) aggregate.Art {
-	return aggregate.Art{}
-}
-
 func (r *PgSqlArtRepository) FindArtById(id uuid.UUID) (aggregate.Art, error) {
 	var art aggregate.Art
 	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("id = ?", id).First(&art)
+	return art, result.Error
+}
+
+func (r *PgSqlArtRepository) FindArtBySlug(slug string) (aggregate.Art, error) {
+	var art aggregate.Art
+	result := r.db.Preload("Category").Preload("Collection.Owner").Preload("Auctions.Bids.Bidder").Preload("Owner").Where("slug = ?", slug).First(&art)
 	return art, result.Error
 }
 

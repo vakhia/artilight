@@ -53,13 +53,26 @@ func (h HttpServer) GetArt(ctx *gin.Context) {
 		return
 	}
 
-	art, err := h.app.Queries.GetArt.Handle(artId)
+	art, err := h.app.Queries.GetArtById.Handle(artId)
 	if err != nil {
 		server.RespondWithError(ctx, err)
 		return
 	}
 
 	ctx.JSON(200, gin.H{"data": art})
+}
+
+func (h HttpServer) GetArtBySlug(ctx *gin.Context) {
+	slug := ctx.Param("slug")
+
+	art, err := h.app.Queries.GetArtBySlug.Handle(slug)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": art})
+
 }
 
 func (h HttpServer) CreateArt(ctx *gin.Context) {
