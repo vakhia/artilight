@@ -1,6 +1,9 @@
 package entity
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"time"
+)
 
 type Auction struct {
 	Id        uuid.UUID
@@ -21,6 +24,7 @@ type Bid struct {
 	BidderID  uuid.UUID `gorm:"index;foreignKey:BidderID;references:ID"`
 	Bidder    Owner     `gorm:"foreignKey:BidderID"`
 	AuctionID uuid.UUID `gorm:"index;foreignKey:AuctionID;references:ID"`
+	Time      time.Time
 }
 
 func (b Bid) TableName() string {

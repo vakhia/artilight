@@ -47,5 +47,6 @@ type AuctionResponse struct {
 type BidResponse struct {
 	Id     uuid.UUID     `json:"id"`
 	Amount float64       `json:"amount"`
+	Time   string        `json:"time"`
 	Bidder OwnerResponse `json:"bidder"`
 }

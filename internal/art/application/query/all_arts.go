@@ -45,6 +45,7 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 			bids[j] = dto.BidResponse{
 				Id:     bid.Id,
 				Amount: bid.Amount,
+				Time:   bid.Time.String(),
 				Bidder: dto.OwnerResponse{
 					Id:       bid.Bidder.Id,
 					FullName: bid.Bidder.GetFullName(),
