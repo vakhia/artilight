@@ -40,7 +40,7 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 			AllArts:       query.NewAllArtsQuery(artRepository),
 			GetArtById:    query.NewGetArtByIdHandler(artRepository),
 			GetArtBySlug:  query.NewGetArtBySlugHandler(artRepository),
-			AllCollection: query.NewAllCollectionQuery(collectionRepository),
+			AllCollection: query.NewAllCollectionQuery(collectionRepository, artRepository),
 			AllCategories: query.NewAllCategoriesQuery(categoryRepository),
 		},
 	}

@@ -9,6 +9,7 @@ import (
 
 type ArtRepository interface {
 	GetAllArts(params dtos.PaginationParams, sortParams dtos.SortingParams) ([]aggregate.Art, error)
+	GetArtsByCollectionId(collectionId uuid.UUID) ([]aggregate.Art, error)
 	FindArtById(id uuid.UUID) (aggregate.Art, error)
 	FindArtBySlug(slug string) (aggregate.Art, error)
 	Save(art aggregate.Art) error

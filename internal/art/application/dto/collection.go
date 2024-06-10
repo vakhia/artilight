@@ -17,4 +17,5 @@ type CollectionResponse struct {
 	Title       string        `json:"title"`
 	Description string        `json:"description"`
 	Owner       OwnerResponse `json:"owner"`
+	Arts        []ArtResponse `json:"arts"`
 }

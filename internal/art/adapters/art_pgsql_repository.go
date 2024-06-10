@@ -70,3 +70,13 @@ func (r *PgSqlArtRepository) GetAllArts(params dtos.PaginationParams, sortParams
 	}
 	return arts, nil
 }
+
+func (r *PgSqlArtRepository) GetArtsByCollectionId(collectionId uuid.UUID) ([]aggregate.Art, error) {
+	var arts []aggregate.Art
+	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Tags").Preload("Images").Preload("Owner").Preload(clause.Associations).Where("collection_id = ?", collectionId)
+	// Execute the query
+	if err := query.Find(&arts).Error; err != nil {
+		return nil, err
+	}
+	return arts, nil
+}
