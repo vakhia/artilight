@@ -21,6 +21,7 @@ type Art struct {
 	CategoryId   int               `json:"-"`
 	Category     entity.Category   `json:"category,omitempty"`
 	Auctions     []entity.Auction  `gorm:"foreignKey:ItemID"` // Use 'ItemID' as the foreign key
+	Images       []entity.ArtImage `gorm:"foreignKey:ArtId"`  // Use 'ArtId' as the foreign key
 }
 
 func NewArt(slug, title, description string, price float64, minBid float64, owner entity.Owner, category entity.Category, status valueobject.ArtStatus, collection entity.Collection) Art {
@@ -39,4 +40,14 @@ func NewArt(slug, title, description string, price float64, minBid float64, owne
 		Category:     category,
 		CategoryId:   category.Id,
 	}
+}
+
+func (a *Art) AddImage(image entity.ArtImage) {
+	for _, img := range a.Images {
+		if img.Url == image.Url {
+			return
+		}
+	}
+
+	a.Images = append(a.Images, image)
 }

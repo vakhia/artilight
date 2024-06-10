@@ -34,6 +34,7 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 			CreateArtCommand:        command.NewCreateArtHandler(artRepository, categoryRepository, userAdapter, collectionRepository),
 			CreateCategoryCommand:   command.NewCreateCategoryHandler(categoryRepository),
 			CreateCollectionCommand: command.NewCollectionHandler(collectionRepository, userAdapter),
+			UploadArtImageCommand:   command.NewUploadArtImageHandler(artRepository, container.Storage),
 		},
 		Queries: application.Queries{
 			AllArts:       query.NewAllArtsQuery(artRepository),
@@ -63,6 +64,7 @@ func (m *Module) RegisterRoutes() {
 		artGroup.GET("", m.HttpServer.GetAllArts)
 		artGroup.GET("/:slug", m.HttpServer.GetArtBySlug)
 		artGroup.POST("", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.CreateArt)
+		artGroup.POST("/:id/upload-image", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadArtImage)
 	}
 	// Categories routes
 	categoryGroup := m.Router.Group("/api/v1/categories")

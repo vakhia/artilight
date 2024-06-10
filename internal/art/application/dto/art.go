@@ -28,6 +28,12 @@ type ArtResponse struct {
 	Category    CategoryResponse   `json:"category"`
 	Collection  CollectionResponse `json:"collection"`
 	Auction     []AuctionResponse  `json:"auction,omitempty"`
+	Images      []ArtImageResponse `json:"images,omitempty"`
+}
+
+type ArtImageResponse struct {
+	Id  uuid.UUID `json:"id"`
+	Url string    `json:"url"`
 }
 
 type AuctionResponse struct {

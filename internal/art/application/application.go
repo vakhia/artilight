@@ -14,6 +14,7 @@ type Commands struct {
 	CreateArtCommand        command.CreateArtHandler
 	CreateCategoryCommand   command.CreateCategoryHandler
 	CreateCollectionCommand command.CreateCollectionHandler
+	UploadArtImageCommand   command.UploadArtImageHandler
 }
 
 type Queries struct {

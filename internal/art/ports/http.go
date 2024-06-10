@@ -7,6 +7,7 @@ import (
 	"github.com/vakhia/artilight/internal/art/application/dto"
 	"github.com/vakhia/artilight/internal/common/dtos"
 	"github.com/vakhia/artilight/internal/common/server"
+	"io"
 	"strconv"
 )
 
@@ -89,6 +90,37 @@ func (h HttpServer) CreateArt(ctx *gin.Context) {
 	}
 
 	ctx.JSON(201, gin.H{"message": "Art created successfully"})
+}
+
+func (h HttpServer) UploadArtImage(ctx *gin.Context) {
+	artId := ctx.Param("id")
+
+	id, err := uuid.Parse(artId)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	f, uploadedFile, err := ctx.Request.FormFile("file")
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+	defer f.Close()
+
+	fileData, err := io.ReadAll(f)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	err = h.app.Commands.UploadArtImageCommand.Handle(id, fileData, uploadedFile.Filename)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(201, gin.H{"message": "Image uploaded successfully"})
 }
 
 func (h HttpServer) CreateCategory(ctx *gin.Context) {
