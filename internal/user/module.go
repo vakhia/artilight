@@ -35,7 +35,8 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 			UpdateUser:   command.NewUpdateUserHandler(userRepository),
 		},
 		Queries: application.Queries{
-			GetUser: query.NewGetUserHandler(userRepository),
+			GetUser:     query.NewGetUserHandler(userRepository),
+			GetAllUsers: query.NewAllUsersHandler(userRepository),
 		},
 	}
 
@@ -60,6 +61,7 @@ func (m *Module) RegisterRoutes() {
 	userGroup := m.Router.Group("/api/v1/users")
 	{
 		userGroup.GET("/:id", m.HttpServer.GetUser)
+		userGroup.GET("", m.HttpServer.GetAllUsers)
 		userGroup.POST("/upload-avatar", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadAvatar)
 		userGroup.POST("/upload-cover", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadCover)
 		userGroup.PUT("/:id", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UpdateUser)

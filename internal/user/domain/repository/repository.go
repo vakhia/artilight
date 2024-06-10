@@ -9,4 +9,5 @@ type UserRepository interface {
 	FindById(id uuid.UUID) (aggregate.User, error)
 	FindByEmail(email string) (aggregate.User, error)
 	Save(user aggregate.User) error
+	GetAllUsers() ([]aggregate.User, error)
 }

@@ -113,6 +113,16 @@ func (h *HttpServer) GetUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+func (h *HttpServer) GetAllUsers(ctx *gin.Context) {
+	data, err := h.app.Queries.GetAllUsers.Handle()
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"data": data})
+}
+
 func (h *HttpServer) UpdateUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 

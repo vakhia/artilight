@@ -1,45 +1,50 @@
 package query
 
-//type AllArtsQuery struct {
-//	readModel AllArtsReadModel
-//}
-//
-//func NewAllArtsQuery(readModel AllArtsReadModel) AllArtsQuery {
-//	if readModel == nil {
-//		panic("nil readModel")
-//	}
-//
-//	return AllArtsQuery{readModel: readModel}
-//}
-//
-//type AllArtsReadModel interface {
-//	GetAllArts(pageSize, pageNumber int, sortBy, sortOrder string) ([]aggregate.Art, error)
-//}
-//
-//func (h AllArtsQuery) Handle(pageSize, pageNumber int, sortBy, sortOrder string) ([]dto.ArtResponse, error) {
-//	arts, err := h.readModel.GetAllArts(pageSize, pageNumber, sortBy, sortOrder)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	var artResponses []dto.ArtResponse
-//	for _, art := range arts {
-//		artResponse := mapArtToArtResponse(art)
-//		artResponses = append(artResponses, artResponse)
-//	}
-//
-//	return artResponses, nil
-//}
-//
-//func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
-//	return dto.ArtResponse{
-//		ID:          art.Id,
-//		Slug:        art.Slug,
-//		Title:       art.Title,
-//		Description: art.Description,
-//		Price:       art.Price,
-//		Status:      art.Status.String(),
-//		Owner:       art.Owner,
-//		Category:    art.Category,
-//	}
-//}
+import (
+	"github.com/vakhia/artilight/internal/user/application/dto"
+	"github.com/vakhia/artilight/internal/user/domain/aggregate"
+)
+
+type AllUsersHandler struct {
+	readModel AllUsersReadModel
+}
+
+func NewAllUsersHandler(readModel AllUsersReadModel) AllUsersHandler {
+	if readModel == nil {
+		panic("nil readModel")
+	}
+
+	return AllUsersHandler{readModel: readModel}
+}
+
+type AllUsersReadModel interface {
+	GetAllUsers() ([]aggregate.User, error)
+}
+
+func (h AllUsersHandler) Handle() ([]dto.UserResponse, error) {
+	users, err := h.readModel.GetAllUsers()
+	if err != nil {
+		return nil, err
+	}
+
+	var userResponses []dto.UserResponse
+	for _, user := range users {
+		userResponse := mapArtToArtResponse(user)
+		userResponses = append(userResponses, userResponse)
+	}
+
+	return userResponses, nil
+}
+
+func mapArtToArtResponse(user aggregate.User) dto.UserResponse {
+	return dto.UserResponse{
+		Id:        user.Id,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Email:     user.Email,
+		Avatar:    user.Avatar,
+		Cover:     user.Cover,
+		Bio:       user.Bio,
+		Currency:  user.Currency,
+	}
+}

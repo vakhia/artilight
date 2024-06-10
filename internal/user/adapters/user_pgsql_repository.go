@@ -38,3 +38,9 @@ func (r *PgSqlUserRepository) FindById(id uuid.UUID) (aggregate.User, error) {
 	result := r.db.Where("id = ?", id).First(&user)
 	return user, result.Error
 }
+
+func (r *PgSqlUserRepository) GetAllUsers() ([]aggregate.User, error) {
+	var users []aggregate.User
+	result := r.db.Find(&users)
+	return users, result.Error
+}
