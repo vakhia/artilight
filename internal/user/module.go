@@ -55,6 +55,7 @@ func (m *Module) RegisterRoutes() {
 	{
 		authGroup.POST("/register", m.HttpServer.CreateUser)
 		authGroup.POST("/login", m.HttpServer.LoginUser)
+		authGroup.GET("/me", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.GetMe)
 	}
 	userGroup := m.Router.Group("/api/v1/users")
 	{
