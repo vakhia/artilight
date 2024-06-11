@@ -20,7 +20,10 @@ func NewPgSqlAuctionRepository(db *gorm.DB) *PgSqlAuctionRepository {
 }
 
 func (r *PgSqlAuctionRepository) Save(auction aggregate.Auction) error {
-	if err := r.db.Omit(clause.Associations).Create(&auction).Error; err != nil {
+	if err := r.db.Omit(clause.Associations).Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "id"}},                       // key colume
+		DoUpdates: clause.AssignmentColumns([]string{"current_price"}), // column needed to be updated
+	}).Create(&auction).Error; err != nil {
 		return err
 	}
 	return nil

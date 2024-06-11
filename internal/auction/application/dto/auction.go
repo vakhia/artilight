@@ -19,12 +19,14 @@ type UpdateAuctionRequest struct {
 }
 
 type AuctionResponse struct {
-	Id        uuid.UUID     `json:"id"`
-	Status    string        `json:"status"`
-	StartDate time.Time     `json:"start_date"`
-	EndDate   time.Time     `json:"end_date"`
-	Item      ItemResponse  `json:"item"`
-	Bids      []BidResponse `json:"bids"`
+	Id           uuid.UUID     `json:"id"`
+	Status       string        `json:"status"`
+	StartDate    time.Time     `json:"start_date"`
+	EndDate      time.Time     `json:"end_date"`
+	InitialPrice float64       `json:"initial_price"`
+	CurrentPrice float64       `json:"current_price"`
+	Item         ItemResponse  `json:"item"`
+	Bids         []BidResponse `json:"bids"`
 }
 
 type ItemResponse struct {

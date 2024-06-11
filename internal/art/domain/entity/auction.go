@@ -6,12 +6,14 @@ import (
 )
 
 type Auction struct {
-	Id        uuid.UUID
-	ItemID    uuid.UUID `gorm:"index;foreignKey:ItemID;references:Id"`
-	Status    string
-	StartDate string
-	EndDate   string
-	Bids      []Bid `gorm:"foreignKey:AuctionID"`
+	Id           uuid.UUID
+	ItemID       uuid.UUID `gorm:"index;foreignKey:ItemID;references:Id"`
+	Status       string
+	StartDate    string
+	EndDate      string
+	InitialPrice float64
+	CurrentPrice float64
+	Bids         []Bid `gorm:"foreignKey:AuctionID"`
 }
 
 func (a Auction) TableName() string {

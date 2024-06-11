@@ -33,10 +33,12 @@ func (h GetAuctionHandler) Handle(id uuid.UUID) (dto.AuctionResponse, error) {
 
 func mapAuctionToResponse(auction aggregate.Auction) dto.AuctionResponse {
 	return dto.AuctionResponse{
-		Id:        auction.Id,
-		Status:    auction.Status.String(),
-		StartDate: auction.StartDate,
-		EndDate:   auction.EndDate,
+		Id:           auction.Id,
+		Status:       auction.Status.String(),
+		StartDate:    auction.StartDate,
+		EndDate:      auction.EndDate,
+		InitialPrice: auction.InitialPrice,
+		CurrentPrice: auction.CurrentPrice,
 		Item: dto.ItemResponse{
 			Id:    auction.Item.Id,
 			Slug:  auction.Item.Slug,

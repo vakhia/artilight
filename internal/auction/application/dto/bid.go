@@ -6,7 +6,7 @@ import (
 )
 
 type CreateBidRequest struct {
-	Amount    int       `json:"amount"`
+	Amount    float64   `json:"amount"`
 	ItemID    uuid.UUID `json:"item_id"`
 	AuctionID uuid.UUID `json:"auction_id"`
 	BidderID  uuid.UUID `json:"bidder_id"`
@@ -14,7 +14,7 @@ type CreateBidRequest struct {
 
 type BidResponse struct {
 	Id     uuid.UUID      `json:"id"`
-	Amount int            `json:"amount"`
+	Amount float64        `json:"amount"`
 	Time   time.Time      `json:"time"`
 	Item   ItemResponse   `json:"item"`
 	Bidder BidderResponse `json:"bidder"`

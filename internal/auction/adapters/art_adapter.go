@@ -24,5 +24,6 @@ func (a *ArtAdapter) FindItemById(artId uuid.UUID) (entity.Item, error) {
 		Id:    art.Id,
 		Slug:  art.Slug,
 		Title: art.Title,
+		Price: art.Price,
 	}, nil
 }

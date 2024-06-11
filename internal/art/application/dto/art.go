@@ -38,11 +38,14 @@ type ArtImageResponse struct {
 }
 
 type AuctionResponse struct {
-	Id        uuid.UUID     `json:"id"`
-	Status    string        `json:"status"`
-	StartDate string        `json:"start_date"`
-	EndDate   string        `json:"end_date"`
-	Bids      []BidResponse `json:"bids"`
+	Id           uuid.UUID     `json:"id"`
+	Status       string        `json:"status"`
+	StartDate    string        `json:"start_date"`
+	EndDate      string        `json:"end_date"`
+	ItemId       uuid.UUID     `json:"item_id"`
+	InitialPrice float64       `json:"initial_price"`
+	CurrentPrice float64       `json:"current_price"`
+	Bids         []BidResponse `json:"bids"`
 }
 
 type BidResponse struct {

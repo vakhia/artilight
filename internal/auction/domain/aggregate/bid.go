@@ -8,7 +8,7 @@ import (
 
 type Bid struct {
 	Id        uuid.UUID
-	Amount    int
+	Amount    float64
 	Time      time.Time
 	ItemID    uuid.UUID
 	Item      entity.Item
@@ -18,7 +18,7 @@ type Bid struct {
 	Auction   Auction
 }
 
-func NewBid(amount int, item entity.Item, bidder entity.Bidder, auction Auction) Bid {
+func NewBid(amount float64, item entity.Item, bidder entity.Bidder, auction Auction) Bid {
 	return Bid{
 		Id:        uuid.New(),
 		Amount:    amount,

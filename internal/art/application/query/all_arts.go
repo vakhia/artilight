@@ -55,11 +55,14 @@ func mapArtToArtResponse(art aggregate.Art) dto.ArtResponse {
 		}
 
 		auctions[i] = dto.AuctionResponse{
-			Id:        auction.Id,
-			Status:    auction.Status,
-			StartDate: auction.StartDate,
-			EndDate:   auction.EndDate,
-			Bids:      bids,
+			Id:           auction.Id,
+			Status:       auction.Status,
+			StartDate:    auction.StartDate,
+			EndDate:      auction.EndDate,
+			InitialPrice: auction.InitialPrice,
+			CurrentPrice: auction.CurrentPrice,
+			ItemId:       art.Id,
+			Bids:         bids,
 		}
 	}
 

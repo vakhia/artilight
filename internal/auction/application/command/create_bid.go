@@ -40,5 +40,11 @@ func (h *CreateBidHandler) Handle(request dto.CreateBidRequest) error {
 	}
 
 	bid := aggregate.NewBid(request.Amount, item, bidder, auction)
+	auction.SetCurrentPrice(request.Amount)
+	err = h.auctionRepository.Save(auction)
+	if err != nil {
+		return err
+	}
+
 	return h.bidRepository.Save(bid)
 }
