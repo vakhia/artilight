@@ -42,6 +42,7 @@ func NewModule(cfg *config.Config, db *gorm.DB, router *gin.Engine, container *c
 			GetArtBySlug:  query.NewGetArtBySlugHandler(artRepository),
 			AllCollection: query.NewAllCollectionQuery(collectionRepository, artRepository),
 			AllCategories: query.NewAllCategoriesQuery(categoryRepository),
+			AllUsersArts:  query.NewAllUsersArtsQuery(artRepository),
 		},
 	}
 
@@ -63,6 +64,7 @@ func (m *Module) RegisterRoutes() {
 	{
 		artGroup.GET("", m.HttpServer.GetAllArts)
 		artGroup.GET("/:slug", m.HttpServer.GetArtBySlug)
+		artGroup.GET("/get-users-arts/:id", m.HttpServer.GetUsersArts)
 		artGroup.POST("", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.CreateArt)
 		artGroup.POST("/:id/upload-image", middlewares.Authenticate(m.Container.JwtService), m.HttpServer.UploadArtImage)
 	}

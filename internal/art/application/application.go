@@ -23,4 +23,5 @@ type Queries struct {
 	GetArtBySlug  query.GetArtBySlugHandler
 	AllCollection query.AllCollectionsQuery
 	AllCategories query.AllCategoriesQuery
+	AllUsersArts  query.AllUsersArtsQuery
 }

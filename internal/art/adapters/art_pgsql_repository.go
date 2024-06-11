@@ -80,3 +80,13 @@ func (r *PgSqlArtRepository) GetArtsByCollectionId(collectionId uuid.UUID) ([]ag
 	}
 	return arts, nil
 }
+
+func (r *PgSqlArtRepository) GetArtsByOwnerId(id uuid.UUID) ([]aggregate.Art, error) {
+	var arts []aggregate.Art
+	query := r.db.Preload("Category").Preload("Collection.Owner").Preload("Tags").Preload("Images").Preload("Owner").Preload(clause.Associations).Where("owner_id = ?", id)
+	// Execute the query
+	if err := query.Find(&arts).Error; err != nil {
+		return nil, err
+	}
+	return arts, nil
+}

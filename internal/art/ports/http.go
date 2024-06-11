@@ -174,3 +174,19 @@ func (h HttpServer) GetAllCategories(ctx *gin.Context) {
 
 	ctx.JSON(200, gin.H{"data": categories})
 }
+
+func (h HttpServer) GetUsersArts(ctx *gin.Context) {
+	userId, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	arts, err := h.app.Queries.AllUsersArts.Handle(userId)
+	if err != nil {
+		server.RespondWithError(ctx, err)
+		return
+	}
+
+	ctx.JSON(200, gin.H{"data": arts})
+}

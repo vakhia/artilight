@@ -13,6 +13,7 @@ type ArtRepository interface {
 	FindArtById(id uuid.UUID) (aggregate.Art, error)
 	FindArtBySlug(slug string) (aggregate.Art, error)
 	Save(art aggregate.Art) error
+	GetArtsByOwnerId(id uuid.UUID) ([]aggregate.Art, error)
 }
 
 type CategoryRepository interface {
